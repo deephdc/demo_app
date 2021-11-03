@@ -69,8 +69,7 @@ def get_metadata():
 def get_predict_args():
     """
     TODO: add more dtypes
-    * image, audio, video
-    * int with choices, int with range
+    * int with choices
     * composed: list of strs, list of int
     """
     # WARNING: missing!=None has to go with required=False
@@ -122,12 +121,12 @@ def get_predict_args():
             location="form",
             description="audio",  # needed to be parsed by UI
         ),
-#         "demo-video": fields.Field(
-#             required=False,
-#             type="file",
-#             location="form",
-#             description="video",  # needed to be parsed by UI
-#         ),    
+        "demo-video": fields.Field(
+            required=False,
+            type="file",
+            location="form",
+            description="video",  # needed to be parsed by UI
+        ),
     }
     
     return arg_dict
@@ -149,8 +148,7 @@ def predict(**kwargs):
     kwargs['labels'] = ['class2', 'class3', 'class0', 'class1', 'class4']
     
     # Read media files and return them back in base64
-    for k in ['demo-image', 'demo-audio']:
-#     for k in ['demo-video']:
+    for k in ['demo-image', 'demo-audio', 'demo-video']:
         with open(kwargs[k].filename, 'rb') as f:
             media = f.read()
         media = base64.b64encode(media)  # bytes
@@ -173,8 +171,8 @@ schema = {
         description='image'),  # needed to be parsed by UI
     "demo-audio": fields.Str(
         description='audio'),  # needed to be parsed by UI
-#     "demo-video": fields.Str(
-#         description='video'),  # needed to be parsed by UI
+    "demo-video": fields.Str(
+        description='video'),  # needed to be parsed by UI
     "labels": fields.List(fields.Str()),
     "probabilities": fields.List(fields.Float()),
 }
