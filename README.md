@@ -11,11 +11,6 @@ git clone https://github.com/deephdc/demo_app && cd demo_app
 pip install -e .
 deepaas-run --listen-ip 0.0.0.0
 ```
+The associated Docker container for this module can be found in [deephdc/DEEP-OC-demo_app](https://github.com/deephdc/DEEP-OC-demo_app).
 
 Samples for media files are provided in `./data`.
-
-> :warning: This is **work-in-progress**.
->
-> **TODOs**:
-> * implement additional data types (if needed).
-> * create DEEP-OC repo to launch with Docker.
