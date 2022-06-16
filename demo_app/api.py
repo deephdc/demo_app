@@ -21,7 +21,6 @@ Integrate a model with the DEEP API
 import base64
 from functools import wraps
 import json
-import pkg_resources
 from random import random
 
 from aiohttp.web import HTTPBadRequest
@@ -43,7 +42,7 @@ def _catch_error(f):
 def get_metadata():
     metadata = {
         "author": "Ignacio Heredia",
-        "description": 
+        "description":
             """
             A minimal toy application for demo and testing purposes.
             We just implemented dummy inference, ie. we return the same inputs we are feed.
@@ -51,7 +50,7 @@ def get_metadata():
         "license": "MIT",
         "url": "https://github.com/deephdc/demo_app",
         "version": "0.1",
-        "summary": 
+        "summary":
             """
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
@@ -100,7 +99,7 @@ def get_predict_args():
             required=False,
             missing=True,
         ),
-        "demo-dict": fields.Str(  # dicts have to be processed as strings 
+        "demo-dict": fields.Str(  # dicts have to be processed as strings
             required=False,
             missing='{"a": 0, "b": 1}',  # use double quotes inside dict
         ),
@@ -128,7 +127,7 @@ def get_predict_args():
             description="video",  # needed to be parsed by UI
         ),
     }
-    
+
     return arg_dict
 
 
@@ -146,18 +145,18 @@ def predict(**kwargs):
     prob = [random() for _ in range(5)]
     kwargs['probabilities'] = [i / sum(prob) for i in prob]
     kwargs['labels'] = ['class2', 'class3', 'class0', 'class1', 'class4']
-    
+
     # Read media files and return them back in base64
     for k in ['demo-image', 'demo-audio', 'demo-video']:
         with open(kwargs[k].filename, 'rb') as f:
             media = f.read()
         media = base64.b64encode(media)  # bytes
         kwargs[k] = media.decode('utf-8')  # string (in utf-8)
-    
+
     return kwargs
 
 
-# Schema to validate the `predict()` output 
+# Schema to validate the `predict()` output
 schema = {
     "demo-str": fields.Str(),
     "demo-str-choice": fields.Str(),
