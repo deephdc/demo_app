@@ -7,7 +7,8 @@ A _minimal_ toy application for demo and testing purposes. We just implemented d
 
 To launch it, first install the package then run [deepaas](https://github.com/indigo-dc/DEEPaaS):
 ```bash
-git clone https://github.com/deephdc/demo_app && cd demo_app
+git clone https://github.com/deephdc/demo_app 
+cd demo_app
 pip install -e .
 deepaas-run --listen-ip 0.0.0.0
 ```
@@ -21,3 +22,5 @@ The two branches in this repo cover the two main usecases:
      - long responses (that could better fit better in a `txt` file), 
      - media files (eg. returning an image),
      - multiple files (for example returning an image and a text file at the same time, packing them into a zip file).
+
+> TODO: Add one more branch with tox tests, to test Jenkisnfile functionality.
