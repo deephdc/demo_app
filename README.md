@@ -22,5 +22,3 @@ The two branches in this repo cover the two main usecases:
      - long responses (that could better fit better in a `txt` file), 
      - media files (eg. returning an image),
      - multiple files (for example returning an image and a text file at the same time, packing them into a zip file).
-
-> TODO: Add one more branch with tox tests, to test Jenkisnfile functionality.
