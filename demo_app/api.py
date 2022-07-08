@@ -44,21 +44,24 @@ def get_metadata():
         "description":
             """
             A minimal toy application for demo and testing purposes.
-            We just implemented dummy inference, ie. we return the same inputs we are feed.
+            We just implemented dummy inference, ie. we return the
+            same inputs we are feed.
             """,
         "license": "MIT",
         "url": "https://github.com/deephdc/demo_app",
         "version": "0.1",
         "summary":
             """
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-            when an unknown printer took a galley of type and scrambled it to make a type
-            specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was popularised
-            in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus PageMaker including
-            versions of Lorem Ipsum.
+            Lorem Ipsum is simply dummy text of the printing and
+            typesetting industry. Lorem Ipsum has been the industry's
+            standard dummy text ever since the 1500s, when an unknown
+            printer took a galley of type and scrambled it to make a
+            type specimen book. It has survived not only five centuries,
+            but also the leap into electronic typesetting, remaining
+            essentially unchanged. It was popularised in the 1960s with
+            the release of Letraset sheets containing Lorem Ipsum
+            passages, and more recently with desktop publishing software
+            like Aldus PageMaker including versions of Lorem Ipsum.
             """,
     }
     return metadata
@@ -80,7 +83,7 @@ def get_predict_args():
         # either an image or a zip containing an image.
         # More options for MIME types: https://mimeapplication.net/
         "accept": fields.Str(
-            description="Media type(s) that is/are acceptable for the response.",
+            description="Media type(s) acceptable for the response.",
             validate=validate.OneOf(["image/*", "application/zip"]),
         ),
     }
@@ -112,7 +115,11 @@ def predict(**kwargs):
             f.write('Add here any additional information!')
 
         # Pack dir into zip and return it
-        shutil.make_archive(zip_dir.name, format='zip', root_dir=zip_dir.name)
+        shutil.make_archive(
+            zip_dir.name,
+            format='zip',
+            root_dir=zip_dir.name,
+        )
         zip_path = zip_dir.name + '.zip'
 
         return open(zip_path, 'rb')
