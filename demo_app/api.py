@@ -30,20 +30,21 @@ from webargs import fields, validate
 def _catch_error(f):
     """Decorate function to return an error as HTTPBadRequest, in case
     """
+
     @wraps(f)
     def wrap(*args, **kwargs):
         try:
             return f(*args, **kwargs)
         except Exception as e:
             raise HTTPBadRequest(reason=e)
+
     return wrap
 
 
 def get_metadata():
     metadata = {
         "author": "Ignacio Heredia",
-        "description":
-            """
+        "description": """
             A minimal toy application for demo and testing purposes.
             We just implemented dummy inference, ie. we return the
             same inputs we are feed.
@@ -51,8 +52,7 @@ def get_metadata():
         "license": "MIT",
         "url": "https://github.com/deephdc/demo_app",
         "version": "0.1",
-        "summary":
-            """
+        "summary": """
             Lorem Ipsum is simply dummy text of the printing and
             typesetting industry. Lorem Ipsum has been the industry's
             standard dummy text ever since the 1500s, when an unknown
@@ -75,14 +75,15 @@ def get_predict_args():
     * composed: list of strs, list of int
     """
     # WARNING: missing!=None has to go with required=False
+    # fmt: off
     arg_dict = {
         "demo-str": fields.Str(
             required=False,
-            missing='some-string',
+            missing="some-string",
         ),
         "demo-str-choice": fields.Str(
             required=False,
-            missing='choice2',
+            missing="choice2",
             enum=["choice1", "choice2"],
         ),
         "demo-int": fields.Int(
@@ -92,7 +93,7 @@ def get_predict_args():
         "demo-int-range": fields.Int(
             required=False,
             missing=50,
-            validate=[validate.Range(min=1, max=100)]
+            validate=[validate.Range(min=1, max=100)],
         ),
         "demo-float": fields.Float(
             required=False,
@@ -115,22 +116,22 @@ def get_predict_args():
             required=False,
             type="file",
             location="form",
-            description="image",  # needed to be parsed by UI
+            description="image",  # description needed to be parsed by UI
         ),
         "demo-audio": fields.Field(
             required=False,
             type="file",
             location="form",
-            description="audio",  # needed to be parsed by UI
+            description="audio",  # description needed to be parsed by UI
         ),
         "demo-video": fields.Field(
             required=False,
             type="file",
             location="form",
-            description="video",  # needed to be parsed by UI
+            description="video",  # description needed to be parsed by UI
         ),
     }
-
+    # fmt: on
     return arg_dict
 
 
@@ -142,19 +143,19 @@ def predict(**kwargs):
        [1]: https://github.com/deephdc/deepaas_ui
     """
     # Dict are fed as str so have to be converted back
-    kwargs['demo-dict'] = json.loads(kwargs['demo-dict'])
+    kwargs["demo-dict"] = json.loads(kwargs["demo-dict"])
 
     # Add labels and random probalities to output as mock
     prob = [random() for _ in range(5)]
-    kwargs['probabilities'] = [i / sum(prob) for i in prob]
-    kwargs['labels'] = ['class2', 'class3', 'class0', 'class1', 'class4']
+    kwargs["probabilities"] = [i / sum(prob) for i in prob]
+    kwargs["labels"] = ["class2", "class3", "class0", "class1", "class4"]
 
     # Read media files and return them back in base64
-    for k in ['demo-image', 'demo-audio', 'demo-video']:
-        with open(kwargs[k].filename, 'rb') as f:
+    for k in ["demo-image", "demo-audio", "demo-video"]:
+        with open(kwargs[k].filename, "rb") as f:
             media = f.read()
         media = base64.b64encode(media)  # bytes
-        kwargs[k] = media.decode('utf-8')  # string (in utf-8)
+        kwargs[k] = media.decode("utf-8")  # string (in utf-8)
 
     return kwargs
 
@@ -170,11 +171,14 @@ schema = {
     "demo-dict": fields.Dict(),
     "demo-list-of-floats": fields.List(fields.Float()),
     "demo-image": fields.Str(
-        description='image'),  # needed to be parsed by UI
+        description="image"  # description needed to be parsed by UI
+    ),
     "demo-audio": fields.Str(
-        description='audio'),  # needed to be parsed by UI
+        description="audio"  # description needed to be parsed by UI
+    ),
     "demo-video": fields.Str(
-        description='video'),  # needed to be parsed by UI
+        description="video"  # description needed to be parsed by UI
+    ),
     "labels": fields.List(fields.Str()),
     "probabilities": fields.List(fields.Float()),
 }
