@@ -31,14 +31,14 @@ class TestModelMethods(unittest.TestCase):
         """
         self.assertEqual(
             self.meta["name"].lower().replace("-", "_"),
-            "{{ cookiecutter.repo_name }}".lower().replace("-", "_"),
+            "demo_app",
         )
         self.assertEqual(
-            self.meta["author"].lower(), "{{ cookiecutter.author_name }}".lower()
+            self.meta["author"].lower(), "ignacio heredia"
         )
         self.assertEqual(
             self.meta["license"].lower(),
-            "{{ cookiecutter.open_source_license }}".lower(),
+            "mit",
         )
 
 
