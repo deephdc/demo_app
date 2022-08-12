@@ -1,7 +1,7 @@
 Demo App
 ========
 
-[![Build Status](https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/demo_app/master)](https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/demo_app/job/master)
+[![Build Status](https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/demo_app/return-files)](https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/demo_app/job/return-files)
 
 A _minimal_ toy application for demo and testing purposes.
 It can serve as a reference implementation of current best practices in the project (mirroring the [DEEP template](https://github.com/deephdc/cookiecutter-deep)).
