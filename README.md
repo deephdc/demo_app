@@ -2,10 +2,13 @@ Demo App
 ========
 
 [![Build Status](https://jenkins.indigo-datacloud.eu/buildStatus/icon?job=Pipeline-as-code/DEEP-OC-org/demo_app/master)](https://jenkins.indigo-datacloud.eu/job/Pipeline-as-code/job/DEEP-OC-org/job/demo_app/job/master)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+A _minimal_ toy application for demo and testing purposes.
+It can serve as a reference implementation of current best practices in the project (mirroring the [DEEP template](https://github.com/deephdc/cookiecutter-deep)).
 
-A _minimal_ toy application for demo and testing purposes. We just implemented dummy inference, ie. we return the same inputs we are fed. If some input is not fed we generate a default one.
+This demo module implements:
+* **dummy inference**, ie. we return the same inputs we are fed. If some input is not fed we generate a default one.
+* **dummy training**, ie. we sleep for some time and output some random monitoring metrics.
 
 To launch it, first install the package then run [deepaas](https://github.com/indigo-dc/DEEPaaS):
 ```bash
@@ -24,3 +27,5 @@ The two branches in this repo cover the two main usecases:
      - long responses (that could better fit better in a `txt` file), 
      - media files (eg. returning an image),
      - multiple files (for example returning an image and a text file at the same time, packing them into a zip file).
+
+The `train()` function is common for both branches.

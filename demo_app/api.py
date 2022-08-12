@@ -19,53 +19,79 @@ Integrate a model with the DEEP API
 """
 
 import base64
-from functools import wraps
 import json
+import math
+from pathlib import Path
+import pkg_resources
 from random import random
+import time
 
-from aiohttp.web import HTTPBadRequest
+from tensorboardX import SummaryWriter
 from webargs import fields, validate
 
-
-def _catch_error(f):
-    """Decorate function to return an error as HTTPBadRequest, in case
-    """
-
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        try:
-            return f(*args, **kwargs)
-        except Exception as e:
-            raise HTTPBadRequest(reason=e)
-
-    return wrap
+from demo_app.misc import _catch_error, launch_tensorboard
 
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
+
+@_catch_error
 def get_metadata():
-    metadata = {
-        "author": "Ignacio Heredia",
-        "description": """
-            A minimal toy application for demo and testing purposes.
-            We just implemented dummy inference, ie. we return the
-            same inputs we are feed.
-            """,
-        "license": "MIT",
-        "url": "https://github.com/deephdc/demo_app",
-        "version": "0.1",
-        "summary": """
-            Lorem Ipsum is simply dummy text of the printing and
-            typesetting industry. Lorem Ipsum has been the industry's
-            standard dummy text ever since the 1500s, when an unknown
-            printer took a galley of type and scrambled it to make a
-            type specimen book. It has survived not only five centuries,
-            but also the leap into electronic typesetting, remaining
-            essentially unchanged. It was popularised in the 1960s with
-            the release of Letraset sheets containing Lorem Ipsum
-            passages, and more recently with desktop publishing software
-            like Aldus PageMaker including versions of Lorem Ipsum.
-            """,
+    """
+    DO NOT REMOVE - All modules should have a get_metadata() function
+    with appropriate keys.
+    """
+    distros = list(pkg_resources.find_distributions(str(BASE_DIR), only=True))
+    if len(distros) == 0:
+        raise Exception("No package found.")
+    pkg = distros[0]  # if several select first
+
+    meta_fields = {
+        "name": None,
+        "version": None,
+        "summary": None,
+        "home-page": None,
+        "author": None,
+        "author-email": None,
+        "license": None,
     }
-    return metadata
+    meta = {}
+    for line in pkg.get_metadata_lines("PKG-INFO"):
+        line_low = line.lower()  # to avoid inconsistency due to letter cases
+        for k in meta_fields:
+            if line_low.startswith(k + ":"):
+                _, value = line.split(": ", 1)
+                meta[k] = value
+
+    return meta
+
+
+def get_train_args():
+    arg_dict = {
+        "epoch_num": fields.Int(
+            required=False,
+            missing=10,
+            description="Total number of training epochs",
+        ),
+    }
+    return arg_dict
+
+
+def train(**kwargs):
+    """
+    Dummy training. We just sleep for some number of epochs (1 epoch = 1 second)
+    mimicking some computation taking place.
+    We can log some random losses in Tensorboard to mimic monitoring.
+    """
+    logdir = BASE_DIR / "runs" / time.strftime("%Y-%m-%d_%H-%M-%S")
+    writer = SummaryWriter(logdir=logdir)
+    launch_tensorboard(logdir=logdir)
+    for epoch in range(kwargs["epoch_num"]):
+        time.sleep(1.)
+        writer.add_scalar("scalars/loss", - math.log(epoch + 1), epoch)
+    writer.close()
+
+    return {"status": "done", "final accuracy": 0.9}
 
 
 def get_predict_args():
