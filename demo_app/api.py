@@ -139,19 +139,19 @@ def get_predict_args():
             missing=[0.1, 0.2, 0.3],
         ),
         "demo-image": fields.Field(
-            required=False,
+            required=True,
             type="file",
             location="form",
             description="image",  # description needed to be parsed by UI
         ),
         "demo-audio": fields.Field(
-            required=False,
+            required=True,
             type="file",
             location="form",
             description="audio",  # description needed to be parsed by UI
         ),
         "demo-video": fields.Field(
-            required=False,
+            required=True,
             type="file",
             location="form",
             description="video",  # description needed to be parsed by UI
