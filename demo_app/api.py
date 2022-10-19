@@ -99,7 +99,7 @@ def get_predict_args():
     """
     arg_dict = {
         "demo-image": fields.Field(
-            required=False,
+            required=True,
             type="file",
             location="form",
             description="image",  # needed to be parsed by UI
