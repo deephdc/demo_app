@@ -1,6 +1,10 @@
 webargs>=5.5.2
-deepaas>=1.3.0
+deepaas>=2.0.0
 
 # not mandatory but nice if you want to monitor training
 tensorboard>=2.8.0
 tensorboardX>=2.5.1
+
+# important for field.Field type=file to be non-required
+aiohttp-apispec==2.2.1
+MarkupSafe~=1.1.1
