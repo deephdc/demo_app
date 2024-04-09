@@ -21,6 +21,7 @@ Integrate a model with the DEEP API
 import math
 from pathlib import Path
 import pkg_resources
+from random import random
 import shutil
 import tempfile
 import time
@@ -80,15 +81,25 @@ def train(**kwargs):
     """
     Dummy training. We just sleep for some number of epochs (1 epoch = 1 second)
     mimicking some computation taking place.
-    We can log some random losses in Tensorboard to mimic monitoring.
+    We log some random metrics in Tensorboard to mimic monitoring.
     """
     logdir = BASE_DIR / "runs" / time.strftime("%Y-%m-%d_%H-%M-%S")
-    writer = SummaryWriter(logdir=logdir)
+    writer = SummaryWriter(logdir=logdir, flush_secs=1)
     launch_tensorboard(logdir=logdir)
     for epoch in range(kwargs["epoch_num"]):
         time.sleep(1.)
-        writer.add_scalar("scalars/loss", - math.log(epoch + 1), epoch)
+        writer.add_scalar(  # fake loss with random noise
+            "scalars/loss",
+            - math.log(epoch + 1) * (1 + random() * 0.2),
+            epoch)
+        writer.add_scalar(  # fake accuracy with random noise (clipped to 1)
+            "scalars/accuracy",
+            min((1 - 1/ (epoch+1)) * (1 + random() * 0.1), 1),
+            epoch)
     writer.close()
+
+    # Write a fake model file
+    (logdir / 'final_model.hdf5').touch()
 
     return {"status": "done", "final accuracy": 0.9}
 
